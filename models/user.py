@@ -4,7 +4,7 @@ from sqlalchemy import Column, String
 from models.base_model import Base
 
 
-class User(BaseModel, Base):
+class User(BaseModel, Base, email, password, first_name, last_name):
     """This class defines a user by various attributes"""
     __tablename__ = 'users'
     email = Column(String(128), nullable=False)
