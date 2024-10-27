@@ -135,7 +135,7 @@ class HBNBCommand(cmd.Cmd):
                 if '.' in value:
                     try:
                         value = float(value)
-                    except: ValueError:
+                    except ValueError:
                         pass
                 if value.isdigit():
                     value = int(value)
