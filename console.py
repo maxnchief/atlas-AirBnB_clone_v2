@@ -113,36 +113,48 @@ class HBNBCommand(cmd.Cmd):
         """ Overrides the emptyline method of CMD """
         pass
 
-    def do_create(self, args):
-        """ Create an object of any class"""
-        if not args:
+    def do_create(self, arg):
+        'creates a new instance of BaseModel'
+        args = arg.split() #splits the input argument into individual words
+        if len(args) < 1: #checks if there is at least one argument
             print("** class name missing **")
             return
-        #parses the class name out on the args
-        class_name = args.split()[1]
-        if class_name not in HBNBCommand.classes:
+        model_class = HBNBCommand.classes.get(args[0]) #try to get the class
+        if model_class is None: #check if the class exists
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
-        #parses the inputted parameters into their own strings
-        param_args = args.split()[1:]
-        for arg in param_args:
-            #checks to see if the key value pairs are formatted properly
-            if '=' in arg:
-                key, value = arg.split('=') #splits the key value pair up into their own variables
-                key = key.strip() #stripping the whitespace off of the key
-                value = value.strip('"').replace('\\"','"') 
-                if '.' in value:
-                    try:
-                        value = float(value)
-                    except ValueError:
-                        pass
-                if value.isdigit():
+        key_value_dict = {} #initialize an empty dictionary
+        for key_value in args[1:]: #iterates through the remaining arguments
+            (key, value) = key_value.split("=") #split the key-value pair into seperate variables
+            if (value.startswith('"') and value.endswith('"')): #checks if value is a string
+                value = value[1:-1]
+                value = value.replace("_", " ").replace('"', '\\"')
+            elif value.count(".") == 1: #checks if value is a float
+                try:
+                    value = float(value)
+                except ValueError:
+                    continue
+            elif value.isdigit(): #defaults value to int otherwise
+                try:
                     value = int(value)
-                setattr(new_instance, key, value)
-        storage.save()
-        print(new_instance.id)
-        storage.save()
+                except ValueError:
+                    continue
+            else:
+                continue
+            key_value_dict[key] = value #add the key-value pair to the dictionary
+        new_obj = model_class() #create new instance of the class
+        for key, value in key_value_dict.items(): #iterates through the key-value pairs in the dictionary
+            if hasattr(new_obj, key): #check if the model has an attribute with the given name
+                attr_type = type(getattr(new_obj, key))
+                try:
+                    setattr(new_obj, key, attr_type(value)) #try to set the attribute value
+                    new_obj.save() #call the save method on the new instance
+                except (ValueError, TypeError):
+                    print("** value could not be typecast **")
+            else:
+                print("** no such attribute found **")
+        print(new_obj.id) #print the id of the newly created object
+
 
     def help_create(self):
         """ Help information for the create method """
