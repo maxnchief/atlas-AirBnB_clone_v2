@@ -10,7 +10,7 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
-
+from models.engine import storage_type
 
 class HBNBCommand(cmd.Cmd):
     """ Contains the functionality for the HBNB console"""
@@ -88,6 +88,8 @@ class HBNBCommand(cmd.Cmd):
 
     def postcmd(self, stop, line):
         """Prints if isatty is false"""
+        if storage_type == 'db':
+            storage.close()
         if not sys.__stdin__.isatty():
             print('(hbnb) ', end='')
         return stop
