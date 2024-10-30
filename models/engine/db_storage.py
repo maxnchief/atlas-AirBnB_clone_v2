@@ -9,6 +9,7 @@ from models.place import Place
 from models.review import Review
 from models.user import User
 
+
 class DBStorage:
     __engine = None
     __session = None
@@ -18,7 +19,10 @@ class DBStorage:
         password = os.getenv('HBNB_MYSQL_PWD')
         host = os.getenv('HBNB_MYSQL_HOST', 'localhost')
         database = os.getenv('HBNB_MYSQL_DB')
-        self.__engine = create_engine(f'mysql+mysqldb://{user}:{password}@{host}/{database}', pool_pre_ping=True)
+        connection_string = (
+            f'mysql+mysqldb://{user}:{password}@{host}/{database}'
+        )
+        self.__engine = create_engine(connection_string, pool_pre_ping=True)
 
         if os.getenv('HBNB_ENV') == 'test':
             Base.metadata.drop_all(self.__engine)
@@ -30,7 +34,7 @@ class DBStorage:
             objects = []
             for class_ in [User, State, City, Amenity, Place, Review]:
                 objects.extend(self.__session.query(class_).all())
-        
+
         return {f"{type(obj).__name__}.{obj.id}": obj for obj in objects}
 
     def new(self, obj):
@@ -45,6 +49,7 @@ class DBStorage:
 
     def reload(self):
         Base.metadata.create_all(self.__engine)
-        session_factory = sessionmaker(bind=self.__engine, expire_on_commit=False)
+        session_factory = sessionmaker(bind=self.__engine,
+                                       expire_on_commit=False)
         Session = scoped_session(session_factory)
         self.__session = Session()
