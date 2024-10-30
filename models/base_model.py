@@ -15,9 +15,9 @@ class BaseModel:
         """Instatntiates a new model"""
         if not kwargs:
             from models import storage
-            self.id = Column(String(60), primary_key=True, nullable=False, default=str(uuid.uuid4()))
-            self.created_at = Column(DateTime, nullable=False, default=datetime.utcnow())
-            self.updated_at = Column(DateTime, nullable=False, default=datetime.utcnow())
+            self.id = Column(String(60), primary_key=True, nullable=False,)
+            self.created_at = Column(DateTime, nullable=False,)
+            self.updated_at = Column(DateTime, nullable=False,)
 
         else:
             kwargs['updated_at'] = datetime.strptime(kwargs['updated_at'],
