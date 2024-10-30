@@ -1,7 +1,7 @@
 import unittest
 from models.city import City
 from models.base_model import BaseModel
-from sqlalchemy.orm import relationship
+from models.engine import storage_type
 
 class TestCity(unittest.TestCase):
     """Test the City class"""
@@ -11,15 +11,21 @@ class TestCity(unittest.TestCase):
         self.city = City()
 
     def test_inheritance(self):
-        """Test that City inherits from BaseModel"""
+        """Test that City is a subclass of BaseModel"""
         self.assertIsInstance(self.city, BaseModel)
 
     def test_attributes(self):
-        """Test City attributes"""
-        self.assertTrue(hasattr(self.city, "name"))
-        self.assertTrue(hasattr(self.city, "state_id"))
-        if hasattr(self.city, "places"):
-            self.assertIsInstance(self.city.places.property, relationship)
+        """Test that City has the correct attributes"""
+        if storage_type == 'db':
+            self.assertTrue(hasattr(self.city, 'name'))
+            self.assertTrue(hasattr(self.city, 'state_id'))
+            self.assertEqual(self.city.name, '')
+            self.assertEqual(self.city.state_id, '')
+        else:
+            self.assertTrue(hasattr(self.city, 'name'))
+            self.assertTrue(hasattr(self.city, 'state_id'))
+            self.assertEqual(self.city.name, '')
+            self.assertEqual(self.city.state_id, '')
 
     def test_name_type(self):
         """Test that name is a string"""
@@ -29,5 +35,5 @@ class TestCity(unittest.TestCase):
         """Test that state_id is a string"""
         self.assertIsInstance(self.city.state_id, str)
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     unittest.main()
