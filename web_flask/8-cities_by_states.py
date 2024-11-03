@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 """
 This module defines a Flask web application that displays a list of cities by states.
-
 """
 
 from flask import Flask, render_template
