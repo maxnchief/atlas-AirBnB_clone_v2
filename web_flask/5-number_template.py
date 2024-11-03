@@ -1,4 +1,4 @@
-#/usr/bin/python3
+#!/usr/bin/python3
 """
 This module defines a simple Flask web application with multiple routes.
 
