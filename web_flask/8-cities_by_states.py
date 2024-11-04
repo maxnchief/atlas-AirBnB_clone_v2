@@ -1,4 +1,8 @@
 #!/usr/bin/python3
+from flask import Flask, render_template
+from models import storage
+from models.state import State
+
 """
 This module defines a Flask web application that displays a list of cities by states.
 
@@ -13,10 +17,6 @@ Usage:
     Run this script to start the Flask web application. The application listens on all public IPs on port 5000.
 """
 
-
-from flask import Flask, render_template
-from models import storage
-from models.state import State
 
 app = Flask(__name__)
 
