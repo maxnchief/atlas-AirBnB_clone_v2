@@ -3,13 +3,13 @@
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship
-from models.engine import storage_type
 
 
 class Amenity(BaseModel, Base):
     """Representation of Amenity """
     if storage_type == 'db':
-        __tablename__ = 'amenities'
+    from models.engine import storage_type
+    if storage_type == 'db':
         name = Column(String(128), nullable=False)
     else:
         name = ""
