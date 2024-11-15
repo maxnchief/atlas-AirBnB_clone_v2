@@ -1,17 +1,6 @@
 #!/usr/bin/python3
 """
-This module defines a Flask web application that serves a list of states.
-
-Routes:
-    /states_list: Displays an HTML page with the states listed in alphabetical order.
-
-Functions:
-    states_list: Retrieves the list of states from the storage and renders the HTML template.
-    teardown_db: Closes the storage on teardown of the Flask app context.
-
-Usage:
-    Run this script to start the Flask web application. The app will be accessible
-    at http://0.0.0.0:5000/states_list.
+starts a Flask web application
 """
 
 from flask import Flask, render_template
