@@ -8,7 +8,7 @@ from sqlalchemy.orm import relationship
 class Amenity(BaseModel, Base):
     """Representation of Amenity """
     if storage_type == 'db':
-    from models.engine import storage_type
+        from models.engine import storage_type
     if storage_type == 'db':
         name = Column(String(128), nullable=False)
     else:
